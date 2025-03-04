@@ -6,14 +6,14 @@ import { Signup } from "../model/signup.js";
 
 const login = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
+    if (!email || !password) {
       throw new Error("Please provide email and password");
     }
 
     // Check if user exists
-    const user = await Signup.findOne({ username });
+    const user = await Signup.findOne({ email });
     if (!user) {
       throw new UnauthenticatedError("Invalid credentials");
     }
@@ -25,7 +25,7 @@ const login = async (req, res, next) => {
     }
 
     // Create JWT token
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 

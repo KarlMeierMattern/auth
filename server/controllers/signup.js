@@ -6,29 +6,29 @@ import { Signup } from "../model/signup.js";
 
 const signup = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
-      throw new Error("Please provide username and password");
+    if (!email || !password) {
+      throw new Error("Please provide email and password");
     }
 
-    // check if username already exists in the database
-    const existingUser = await Signup.findOne({ username });
+    // check if email already exists in the database
+    const existingUser = await Signup.findOne({ email });
     if (existingUser) {
-      throw new UnauthenticatedError("Username already exists.");
+      throw new UnauthenticatedError("Email already exists.");
     }
 
     // hash password before saving to db
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const addUser = {
-      username: username,
+      email: email,
       password: hashedPassword,
     };
 
     const user = await Signup.create(addUser);
 
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 

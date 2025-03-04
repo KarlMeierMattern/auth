@@ -4,7 +4,7 @@ export const Signup = mongoose.model(
   "Signup",
   new mongoose.Schema(
     {
-      username: {
+      email: {
         type: String,
         required: [true, "Please provide email"],
         unique: true, // Ensures no duplicate emails

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true; // Global setting
 
 export default function Signup() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ export default function Signup() {
     e.preventDefault(); // Prevent form submission refresh
 
     // Basic validation
-    if (!username || !password) {
+    if (!email || !password) {
       setMessage("Please fill in all fields");
       return;
     }
 
     try {
-      await axios.post("/signup", { username, password });
+      await axios.post("/signup", { email, password });
       setMessage("Signed up successfully ✅!");
       navigate("/dashboard");
     } catch (error) {
@@ -45,9 +45,9 @@ export default function Signup() {
           <input
             className="w-full h-1/6 mb-4 py-2 px-2 border-blue-950 border-2 rounded-lg font-mono"
             type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             className="w-full h-1/6 mb-4 py-2 px-2 border-blue-950 border-2 rounded-lg font-mono"
