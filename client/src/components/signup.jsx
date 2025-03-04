@@ -9,6 +9,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true; // Send cookies with requests
@@ -16,11 +17,13 @@ export default function Signup() {
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent form submission refresh
+    e.preventDefault();
+    setIsLoading(true);
 
     // Basic validation
     if (!email || !password) {
       setMessage("Please fill in all fields");
+      setIsLoading(false);
       return;
     }
 
@@ -38,6 +41,8 @@ export default function Signup() {
         error.response?.data ||
         "Signup failed. Please try again.";
       setMessage(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -72,7 +77,7 @@ export default function Signup() {
             type="submit"
             className="bg-blue-950 text-white font-mono mt-8 mb-4 py-2 px-2 rounded-xl w-full cursor-pointer"
           >
-            Signup
+            {isLoading ? "Signing up..." : "Signup"}
           </button>
           <p
             className={`text-center ${
