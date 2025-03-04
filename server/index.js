@@ -16,6 +16,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS policy
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true, // Allow cookies
+  })
+);
 
 // Routes
 app.use("/", router);

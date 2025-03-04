@@ -35,10 +35,10 @@ const signup = async (req, res, next) => {
     res
       .cookie("token", token, {
         httpOnly: true, // Secure against XSS
-        secure: process.env.NODE_ENV === "production", // Send only over HTTPS (set to false for local testing)
+        secure: process.env.NODE_ENV === "production" || false, // Send only over HTTPS (set to false for local testing)
         sameSite: "Strict", // Prevent CSRF attacks
         maxAge: 60 * 60 * 1000, // 1 hour
-        domain: "localhost", // Add this for dev
+        domain: "localhost", // For local testing, this should be 'localhost'
       })
       .status(StatusCodes.OK)
       .json({ msg: "Login successful", token: token });

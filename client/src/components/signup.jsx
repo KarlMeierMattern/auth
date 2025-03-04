@@ -11,9 +11,9 @@ export default function Signup() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const baseUrl = import.meta.env.BASE_URL;
-  axios.defaults.baseURL = baseUrl;
   axios.defaults.withCredentials = true; // Send cookies with requests
+
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const handleSignup = async (e) => {
     e.preventDefault(); // Prevent form submission refresh
@@ -29,8 +29,14 @@ export default function Signup() {
       setMessage("Signed up successfully ✅!");
       navigate("/dashboard");
     } catch (error) {
+      // More detailed error logging
+      console.error("Full error:", error);
+      console.error("Error response:", error.response?.data);
+
       const errorMessage =
-        error.response?.data?.message || "Signup failed. Please try again.";
+        error.response?.data?.message ||
+        error.response?.data ||
+        "Signup failed. Please try again.";
       setMessage(errorMessage);
     }
   };
