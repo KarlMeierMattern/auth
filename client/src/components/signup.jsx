@@ -11,22 +11,18 @@ export default function Signup() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const baseUrl =
-    import.meta.env.VITE_ENV === "development"
-      ? import.meta.env.VITE_DEV_BASE_URL
-      : import.meta.env.VITE_PROD_BASE_URL;
-
+  const baseUrl = import.meta.env.BASE_URL;
   axios.defaults.baseURL = baseUrl;
   axios.defaults.withCredentials = true; // Send cookies with requests
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     try {
-      await axios.post("/login", { username, password }); // JWT is stored in cookie
-      setMessage("Logged in successfully!");
-      navigate("/"); // Redirect after login
+      await axios.post("/signup", { username, password }); // JWT is stored in cookie
+      setMessage("Signed up successfully ✅!");
+      navigate("/dashboard"); // Redirect after signup
     } catch (error) {
       console.log(error);
-      setMessage("Login failed");
+      setMessage("Signup failed");
     }
   };
 
@@ -58,7 +54,7 @@ export default function Signup() {
         </p>
         <button
           className="bg-blue-950 text-white font-mono mt-8 mb-4 py-2 px-2 rounded-xl w-full cursor-pointer"
-          onClick={handleLogin}
+          onClick={handleSignup}
         >
           Signup
         </button>

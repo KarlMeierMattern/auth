@@ -5,6 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import router from "./routes/route.js";
+import { authenticateJWT } from "./middleware/auth.js";
 
 const app = express();
 
@@ -19,10 +20,15 @@ app.use(cookieParser());
 // Routes
 app.use("/", router);
 
+// Private routes (only accessible if JWT is valid)
+app.use("/dashboard", authenticateJWT, (req, res) => {
+  // This would be the route where users can access the dashboard
+  res.json({ message: "Welcome to the dashboard!" });
+});
+
 // Error handler middleware
 
-// Connect MongoDB
-
+// Connect MongoDB and start server
 const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);

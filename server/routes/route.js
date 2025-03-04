@@ -1,10 +1,14 @@
 import express from "express";
+import { signup } from "../controllers/signup.js";
+import { login } from "../controllers/login.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("You're on the backend");
-});
+// Signup
+router.post("/signup", signup);
+
+// Login
+router.post("/login", login);
 
 // Send user details to frontend to access username
 router.get("/user-info", (req, res) => {
