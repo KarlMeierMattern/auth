@@ -11,11 +11,7 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const baseUrl =
-    import.meta.env.VITE_ENV === "development"
-      ? import.meta.env.VITE_DEV_BASE_URL
-      : import.meta.env.VITE_PROD_BASE_URL;
-
+  const baseUrl = import.meta.env.BASE_URL;
   axios.defaults.baseURL = baseUrl;
   axios.defaults.withCredentials = true; // Send cookies with requests
 

@@ -9,7 +9,7 @@ const signup = async (req, res, next) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      throw new Error("Please provide email and password");
+      throw new Error("Please provide username and password");
     }
 
     // check if username already exists in the database
