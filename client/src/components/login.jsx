@@ -1,10 +1,10 @@
 "use client";
 
-axios.defaults.withCredentials = true; // Global setting
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+axios.defaults.withCredentials = true; // Send cookies with requests
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,12 +26,23 @@ export default function Login() {
 
     setIsLoading(true);
     try {
-      await axios.post("/login", { email, password });
+      const response = await axios.post("/login", { email, password });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       enqueueSnackbar("Signed up successfully ✅", { variant: "success" });
       navigate(`/dashboard/${email}`);
     } catch (error) {
-      setMessage(error);
-      enqueueSnackbar("Error", { variant: "error" });
+      if (error.response && error.response.data) {
+        setMessage(
+          error.response.data.msg || "An error occurred. Please try again."
+        );
+      } else {
+        setMessage("An error occurred. Please try again.");
+      }
+      enqueueSnackbar(
+        "Error: " + (error.response?.data.msg || "Invalid credentials"),
+        { variant: "error" }
+      );
     } finally {
       setIsLoading(false);
     }
@@ -60,9 +71,9 @@ export default function Login() {
           />
           <button
             type="submit"
-            className={`bg-blue-950 text-white font-mono mt-8 mb-4 py-2 px-2 rounded-xl w-full ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={
+              "bg-blue-950 text-white font-mono mt-8 mb-4 py-2 px-2 rounded-xl w-full cursor-pointer"
+            }
             disabled={isLoading}
           >
             {isLoading ? "Logging in..." : "Login"}

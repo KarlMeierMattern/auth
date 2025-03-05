@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import router from "./routes/route.js";
-import { authenticateJWT } from "./middleware/auth.js";
+import { errorHandlerMiddleware } from "./middleware/error-handler.js";
 
 const app = express();
 
@@ -27,6 +27,7 @@ app.use(
 app.use("/", router);
 
 // Error handler middleware
+app.use(errorHandlerMiddleware);
 
 // Connect MongoDB and start server
 const start = async () => {

@@ -14,9 +14,10 @@ export default function Dashboard() {
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/dashboard/${id}`
-        );
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/dashboard/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setResponse(response.data.message);
         setIsLoading(false);
       } catch (error) {

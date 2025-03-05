@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-axios.defaults.withCredentials = true; // Global setting
+axios.defaults.withCredentials = true; // Send cookies with requests
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -14,9 +14,7 @@ export default function Signup() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  axios.defaults.withCredentials = true; // Send cookies with requests
-
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL; // allows for shortening of url
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -33,8 +31,18 @@ export default function Signup() {
       enqueueSnackbar("Signed up successfully", { variant: "success" });
       navigate(`/dashboard/${email}`);
     } catch (error) {
-      setMessage(error);
-      enqueueSnackbar("Error", { variant: "error" });
+      console.log("Error:", error);
+      if (error.response && error.response.data) {
+        setMessage(
+          error.response.data.msg || "An error occurred. Please try again."
+        );
+      } else {
+        setMessage("An error occurred. Please try again.");
+      }
+      enqueueSnackbar(
+        "Error: " + (error.response?.data.msg || "Invalid credentials"),
+        { variant: "error" }
+      );
     } finally {
       setIsLoading(false);
     }

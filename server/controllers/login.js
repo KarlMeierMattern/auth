@@ -32,14 +32,14 @@ export const login = async (req, res, next) => {
     // Send response with cookie
     res
       .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        httpOnly: true, // prevents JavaScript from accessing the cookie, mitigating XSS attacks
+        secure: process.env.NODE_ENV === "production", // ensures that the cookie is only sent over HTTPS, which is good practice for production environments
+        sameSite: "Strict", // helps prevent CSRF attacks
         maxAge: 60 * 60 * 1000,
         domain: "localhost",
       })
       .status(StatusCodes.OK)
-      .json({ msg: "Login successful" });
+      .json({ msg: "Login successful", token });
   } catch (error) {
     next(error);
   }

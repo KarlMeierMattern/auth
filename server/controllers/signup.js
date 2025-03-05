@@ -41,7 +41,7 @@ export const signup = async (req, res, next) => {
         domain: "localhost", // For local testing, this should be 'localhost'
       })
       .status(StatusCodes.OK)
-      .json({ msg: "Login successful", token: token });
+      .json({ msg: "Signup successful", token: token });
   } catch (error) {
     next(error); // Pass the error to the error handler which handles both custom errors and unexpected server issues.
   }
