@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 axios.defaults.withCredentials = true; // Global setting
 
 export default function Signup() {
@@ -10,6 +11,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true; // Send cookies with requests
@@ -20,7 +22,6 @@ export default function Signup() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Basic validation
     if (!email || !password) {
       setMessage("Please fill in all fields");
       setIsLoading(false);
@@ -29,18 +30,11 @@ export default function Signup() {
 
     try {
       await axios.post("/signup", { email, password });
-      setMessage("Signed up successfully ✅!");
+      enqueueSnackbar("Signed up successfully", { variant: "success" });
       navigate(`/dashboard/${email}`);
     } catch (error) {
-      // More detailed error logging
-      console.error("Full error:", error);
-      console.error("Error response:", error.response?.data);
-
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data ||
-        "Signup failed. Please try again.";
-      setMessage(errorMessage);
+      setMessage(error);
+      enqueueSnackbar("Error", { variant: "error" });
     } finally {
       setIsLoading(false);
     }
@@ -79,13 +73,7 @@ export default function Signup() {
           >
             {isLoading ? "Signing up..." : "Signup"}
           </button>
-          <p
-            className={`text-center ${
-              message.includes("✅") ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {message}
-          </p>{" "}
+          <p>{message}</p>
         </form>
       </div>
     </div>

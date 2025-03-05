@@ -1,21 +1,23 @@
 "use client";
 
-import axios from "axios";
 axios.defaults.withCredentials = true; // Global setting
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form submission default behavior
+    e.preventDefault();
 
     if (!email || !password) {
       setMessage("Please fill in all fields");
@@ -25,13 +27,11 @@ export default function Login() {
     setIsLoading(true);
     try {
       await axios.post("/login", { email, password });
-      setMessage("Logged in successfully!");
+      enqueueSnackbar("Signed up successfully ✅", { variant: "success" });
       navigate(`/dashboard/${email}`);
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Login failed. Please try again.";
-      setMessage(errorMessage);
-      console.error("Login error:", error);
+      setMessage(error);
+      enqueueSnackbar("Error", { variant: "error" });
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +44,7 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <input
             className="w-full h-1/6 mb-4 py-2 px-2 border-blue-950 border-2 rounded-lg font-mono"
-            type="email" // Changed to email type for built-in validation
+            type="email"
             placeholder="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +67,7 @@ export default function Login() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
-          <pre>{message}</pre>
+          <p>{message}</p>
         </form>
       </div>
     </div>

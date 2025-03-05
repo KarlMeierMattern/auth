@@ -31,7 +31,6 @@ export default function Dashboard() {
     <div>
       <h1 className="text-4xl font-bold">Dashboard</h1>
       <p>{isLoading ? "Loading" : `Welcome ${response}`}</p>{" "}
-      {/* Display the welcome message */}
     </div>
   );
 }
