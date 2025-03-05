@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Signup } from "../model/signup.js";
 
-const login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -44,5 +44,3 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
-
-export { login };

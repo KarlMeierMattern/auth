@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Signup } from "../model/signup.js";
 
-const signup = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -46,5 +46,3 @@ const signup = async (req, res, next) => {
     next(error); // Pass the error to the error handler which handles both custom errors and unexpected server issues.
   }
 };
-
-export { signup };

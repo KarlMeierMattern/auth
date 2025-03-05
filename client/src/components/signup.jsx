@@ -30,7 +30,7 @@ export default function Signup() {
     try {
       await axios.post("/signup", { email, password });
       setMessage("Signed up successfully ✅!");
-      navigate("/dashboard");
+      navigate(`/dashboard/${email}`);
     } catch (error) {
       // More detailed error logging
       console.error("Full error:", error);

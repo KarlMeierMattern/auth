@@ -26,12 +26,6 @@ app.use(
 // Routes
 app.use("/", router);
 
-// Private routes (only accessible if JWT is valid)
-app.use("/dashboard", authenticateJWT, (req, res) => {
-  // This would be the route where users can access the dashboard
-  res.json({ message: "Welcome to the dashboard!" });
-});
-
 // Error handler middleware
 
 // Connect MongoDB and start server

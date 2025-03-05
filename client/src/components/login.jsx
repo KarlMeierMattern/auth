@@ -12,8 +12,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const baseUrl = import.meta.env.BASE_URL;
-  axios.defaults.baseURL = baseUrl;
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent form submission default behavior
@@ -27,7 +26,7 @@ export default function Login() {
     try {
       await axios.post("/login", { email, password });
       setMessage("Logged in successfully!");
-      navigate("/");
+      navigate(`/dashboard/${email}`);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
