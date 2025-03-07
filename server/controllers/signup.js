@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { UnauthenticatedError } from "../errors/unauthenticated-error.js";
+import { UnauthenticatedError, BadRequestError } from "../errors/index.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Signup } from "../model/signup.js";
@@ -9,17 +9,20 @@ export const signup = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new Error("Please provide email and password");
+      throw new BadRequestError("Please provide email and password");
     }
 
     // check if email already exists in the database
     const existingUser = await Signup.findOne({ email });
     if (existingUser) {
-      throw new UnauthenticatedError("Email already exists.");
+      throw new UnauthenticatedError("Email already exists."); // immediately stops execution of try block and jumps to catch block
     }
 
+    // generate random salt
+    const salt = await bcrypt.genSalt(10);
+
     // hash password before saving to db
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const addUser = {
       email: email,
@@ -40,9 +43,9 @@ export const signup = async (req, res, next) => {
         maxAge: 60 * 60 * 1000, // 1 hour
         domain: "localhost", // For local testing, this should be 'localhost'
       })
-      .status(StatusCodes.OK)
-      .json({ msg: "Signup successful", token: token });
+      .status(StatusCodes.CREATED)
+      .json({ msg: "Signup successful", token: token, user });
   } catch (error) {
-    next(error); // Pass the error to the error handler which handles both custom errors and unexpected server issues.
+    next(error); // passes errors to the error handler
   }
 };
