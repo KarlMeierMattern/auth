@@ -18,18 +18,19 @@ export const signup = async (req, res, next) => {
       throw new UnauthenticatedError("Email already exists."); // immediately stops execution of try block and jumps to catch block
     }
 
-    // generate random salt
-    const salt = await bcrypt.genSalt(10);
+    // create user
+    const user = await Signup.create({
+      email,
+      password,
+    });
 
-    // hash password before saving to db
+    // generate random salt & hash password
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const addUser = {
-      email: email,
-      password: hashedPassword,
-    };
-
-    const user = await Signup.create(addUser);
+    // update with hashed password
+    user.password = hashedPassword;
+    await user.save();
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
