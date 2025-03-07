@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { UnauthenticatedError } from "../errors/unauthenticated-error.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Signup } from "../model/signup.js";
 

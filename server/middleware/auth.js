@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 export const authenticateJWT = (req, res, next) => {
   const token =
     req.cookies.token ||
-    (req.headers.authorization && req.headers.authorization.split(" ")[1]); // Get JWT from HTTP-only cookie
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]); // Get JWT from HTTP-only cookie or auth header (for mobile)
 
   if (!token) {
     return res
