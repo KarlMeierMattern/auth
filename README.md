@@ -44,7 +44,7 @@ A full-stack authentication system built with Node.js, Express, MongoDB, and Rea
 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/KarlMeierMattern/auth
 ```
 
 2. Install backend dependencies
