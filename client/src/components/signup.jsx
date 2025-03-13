@@ -4,6 +4,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { jwtDecode } from "jwt-decode";
+
 axios.defaults.withCredentials = true; // Send cookies with requests
 
 export default function Signup() {
@@ -27,8 +29,13 @@ export default function Signup() {
     }
 
     try {
-      await axios.post("/signup", { email, password });
-      enqueueSnackbar("Signed up successfully", { variant: "success" });
+      const response = await axios.post("/signup", { email, password });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const decoded = jwtDecode(token);
+      enqueueSnackbar(`Signed up successfully ${decoded.email}`, {
+        variant: "success",
+      });
       navigate(`/dashboard/${email}`);
     } catch (error) {
       console.log("Error:", error);

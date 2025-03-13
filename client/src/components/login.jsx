@@ -29,7 +29,9 @@ export default function Login() {
       const response = await axios.post("/login", { email, password });
       const token = response.data.token;
       localStorage.setItem("token", token);
-      enqueueSnackbar("Signed up successfully ✅", { variant: "success" });
+      enqueueSnackbar(`Signed up successfully✅`, {
+        variant: "success",
+      });
       navigate(`/dashboard/${email}`);
     } catch (error) {
       if (error.response && error.response.data) {
