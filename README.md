@@ -50,15 +50,13 @@ git clone <repository-url>
 2. Install backend dependencies
 
 ```bash
-cd server
-npm install
+cd server && npm install
 ```
 
 3. Install frontend dependencies
 
 ```bash
-cd client
-npm install
+cd client && npm install
 ```
 
 4. Create a `.env` file in the server directory with the following variables:
@@ -71,18 +69,31 @@ JWT_SECRET=your_jwt_secret
 
 ### Running the Application
 
-1. Start the backend server
+1. **Start both servers**
 
 ```bash
-cd server
-npm start
+npm run dev
 ```
 
-2. Start the frontend development server
+This will concurrently run:
+
+- Backend server on `http://localhost:3000`
+- Frontend development server on `http://localhost:5173`
+
+2. **Alternative: Running Servers Separately**
+
+If you prefer to run the servers separately:
+
+**Start the backend server**
 
 ```bash
-cd client
-npm run dev
+cd server && npm run dev
+```
+
+**Start the frontend server (in a new terminal)**
+
+```bash
+cd client && npm run dev
 ```
 
 ## API Endpoints
