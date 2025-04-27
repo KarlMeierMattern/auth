@@ -39,7 +39,7 @@ export const login = async (req, res, next) => {
         domain: "localhost",
       })
       .status(StatusCodes.OK)
-      .json({ msg: "Login successful", token });
+      .json({ msg: "Login successful", token, user: user.email });
   } catch (error) {
     next(error);
   }

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 axios.defaults.withCredentials = true; // Send cookies with requests
 
@@ -32,8 +32,9 @@ export default function Signup() {
       const response = await axios.post("/signup", { email, password });
       const token = response.data.token;
       localStorage.setItem("token", token);
-      const decoded = jwtDecode(token);
-      enqueueSnackbar(`Signed up successfully ${decoded.email}`, {
+      const user = response.data.user;
+      // const decoded = jwtDecode(token);
+      enqueueSnackbar(`Signed up successfully ${user}`, {
         variant: "success",
       });
       navigate(`/dashboard/${email}`);
